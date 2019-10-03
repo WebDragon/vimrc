@@ -1,3 +1,6 @@
+" temporarily disable minibufexplorer for large swathes of file edits
+"let loaded_minibufexplorer = 1
+
 " disable spelling for this file in vim 7
 " vim700: set nospell :
 "
@@ -87,8 +90,8 @@ vmap <f8> <ESC>:call InitUpperSelection()<CR>
 " fix for console/terminal first, though
 map Oc <C-Right>
 map Od <C-Left>
-noremap <C-Right> :bn<CR>
-noremap <C-Left> :bp<CR>
+noremap <C-Right> :bn<CR>_
+noremap <C-Left> :bp<CR>_
 
 " map [d <C-S-Left>
 " map [c <C-S-Right>
@@ -253,6 +256,9 @@ let g:proj_flags='imstbgc'
 " attempt to properly diagnose syntax for 'correcter' commenting with EnhancedCommentify
 let g:EnhCommentifyUseSyntax = "yes"
 
+" use unicode for powerline symbols
+let g:Powerline_symbols = 'unicode'
+
 " see also :help new-filetype for additional tips and info on the following
 
 " Automatically source in my blank html file template remotely.
@@ -265,7 +271,8 @@ let g:EnhCommentifyUseSyntax = "yes"
 :autocmd BufNewFile  *.php	1r ~/madhouse/skel/site/www/index.php
 
 " same for Perl, except position the cursor at the bottom ready to start typing.
-:autocmd BufNewFile *.pl 0r ~/.vim/skeleton.pl|normal G
+" below no longer needed due to installation of vim-perl-support-5.3.2-4.fc24.noarch - sg
+":autocmd BufNewFile *.pl 0r ~/.vim/skeleton.pl|normal G
 :autocmd BufNewFile *.cgi 0r ~/.vim/skeleton.cgi|normal G
 
 " automatically source in my css blank, preferred folding mappings, and
@@ -283,8 +290,8 @@ let g:EnhCommentifyUseSyntax = "yes"
 " with vim 6 and was replaced with 1120 for 7.x. which is now far more up to date
 " and modern than 346
 " in the future, use the package from https://github.com/2072/PHP-Indenting-for-VIm which current install as of this writing is 1.57
-:au BufRead,BufNewFile *.php set filetype=html syntax=php
-:au BufRead,BufNewFile *.phtml set filetype=html syntax=php
+:au BufRead,BufNewFile *.php set filetype=html.php syntax=php
+:au BufRead,BufNewFile *.phtml set filetype=html.php syntax=php
 
 " make sure we're using tabs to spaces in python files no matter the global setting of expandtab
 :au BufRead,BufNewFile *.py set expandtab
@@ -325,7 +332,10 @@ nmap <silent> <leader>dL :call DiffToggle(1)<cr>
 nmap <silent> <leader>dC :call DiffToggle(2)<cr>
 nmap <silent> <leader>dR :call DiffToggle(3)<cr>
 
-command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis | wincmd p | diffthis
+" Now in defaults.vim
+" command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis | wincmd p | diffthis
+
 " select in visual mode, press * and voila, you're searching for that phrase!
 " note that this differs from the normal-mode use of * in that you can phrase-search
 vmap * :<C-U>let old_reg=@"<cr>gvy/<C-R><C-R>=substitute(escape(@",'\\/.*$^~[]'),"\\n$","","")<CR><CR>:let @"=old_reg<CR>
+
